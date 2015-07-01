@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
-  <link href='https://staging.wdt.io/index.css' rel='stylesheet' type='text/css'>
+  <link href='//wdt.io/index.css' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
   <title>logrotate - WDT.io Cookbook</title>
@@ -140,7 +140,11 @@
 
           <script>
             hljs.initHighlightingOnLoad();
-            document.querySelector('nav a[href="' + location.pathname.split('/').reverse()[0] + '"]').classList.add('active');
+            var currentPage = location.pathname.split('/').reverse()[0];
+            var currentLink = document.querySelector('nav a[href="' + currentPage + '"]');
+            if (currentLink) {
+              currentLink.classList.add('active');
+            }
           </script>
         </section>
 
