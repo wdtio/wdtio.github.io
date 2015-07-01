@@ -94,10 +94,7 @@
 
           <script>
             hljs.initHighlightingOnLoad();
-            var currentFile = location.pathname.split('/').reverse()[0];
-            Array.prototype.slice.call(document.querySelectorAll('nav a'))
-              .filter(function(element) {return element.getAttribute('href') === currentFile;})
-              .forEach(function(element) {element.classList.add('active');});
+            document.querySelector('nav a[href="' + location.pathname.split('/').reverse()[0] + '"]').classList.add('active');
           </script>
         </section>
 
