@@ -5,8 +5,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
   <link href='//wdt.io/index.css' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
   <title>webserver - WDT.io Cookbook</title>
 </head>
 <body>
@@ -77,15 +75,6 @@
         </div>
       </header>
       <main class="cookbook">
-        <nav>
-          <ul>
-            <a href='cron.html'><li>cron</li></a>
-            <!-- <a href='heroku_scheduler.html'><li>Heroku</li></a> -->
-            <a href='logrotate.html'><li>logrotate</li></a>
-            <a href='webserver.html'><li>webserver</li></a>
-          </ul>
-        </nav>
-
         <section class="recipe">
           <h2>How to monitor a webserver</h2>
           <p>Apache and nginx are two popular webservers. We can use WDT to be notified when they stop responding to HTTP requests.</p>
@@ -102,19 +91,11 @@
 <p>We are the webmaster of example.io. We set up an outbound timer named <strong>example.io</strong>, enter <strong>http://example.io</strong> as URL and pick <strong>every 1 minute</strong> as schedule.</p>
 <p>Now we'll be notified when example.io is offline and can fix whatever caused the problem (maybe our DNS provider is down).</p>
 
-          <script>
-            hljs.initHighlightingOnLoad();
-            var currentPage = location.pathname.split('/').reverse()[0];
-            var currentLink = document.querySelector('nav a[href="' + currentPage + '"]');
-            if (currentLink) {
-              currentLink.classList.add('active');
-            }
-          </script>
         </section>
 
       </main>
 
-      <footer>
+      <footer class="links">
         <span>©&nbsp;2015&nbsp;WDT.io&nbsp;Inc.</span>
         <span><a href='mailto:info@wdt.io'>info@wdt.io</a></span><br/>
         <span>Send us an email to be notified when we launch.</span>

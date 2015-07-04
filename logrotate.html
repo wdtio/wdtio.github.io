@@ -5,8 +5,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
   <link href='//wdt.io/index.css' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
   <title>logrotate - WDT.io Cookbook</title>
 </head>
 <body>
@@ -77,15 +75,6 @@
         </div>
       </header>
       <main class="cookbook">
-        <nav>
-          <ul>
-            <a href='cron.html'><li>cron</li></a>
-            <!-- <a href='heroku_scheduler.html'><li>Heroku</li></a> -->
-            <a href='logrotate.html'><li>logrotate</li></a>
-            <a href='webserver.html'><li>webserver</li></a>
-          </ul>
-        </nav>
-
         <section class="recipe">
           <h2>How to monitor logrotate</h2>
           <p>Logrotate is a tool that manages activities like automatic rotation, removal and compression of log files in in Unix-like systems. We can use WDT to be notified when logrotate failed.</p>
@@ -138,19 +127,11 @@
 <li><a href="http://linux.die.net/man/1/curl">man page for curl</a></li>
 </ul>
 
-          <script>
-            hljs.initHighlightingOnLoad();
-            var currentPage = location.pathname.split('/').reverse()[0];
-            var currentLink = document.querySelector('nav a[href="' + currentPage + '"]');
-            if (currentLink) {
-              currentLink.classList.add('active');
-            }
-          </script>
         </section>
 
       </main>
 
-      <footer>
+      <footer class="links">
         <span>©&nbsp;2015&nbsp;WDT.io&nbsp;Inc.</span>
         <span><a href='mailto:info@wdt.io'>info@wdt.io</a></span><br/>
         <span>Send us an email to be notified when we launch.</span>
