@@ -117,8 +117,8 @@
 <p>We have the following cron tab on our database server:</p>
 <pre><code class="language-bash">0 20 * * * /home/oracle/scripts/export_dump.sh
 </code></pre>
-<p>Every day at 20:00 the export_dump.sh script is executed. It typically finishes in 4 minutes, but as long as it completes within 10 minutes, we're OK.</p>
-<p>So we name our new inbound timer <strong>db/export</strong>, set the schedule to <strong>every 1 day</strong> and the precision to <strong>8 minutes</strong> (10 minutes minus 4 minutes is 6, rounded up to the next available precision which is 8). The URL for this new timer will look something like <strong>k.wdt.io/123abc/db/export</strong>. With that, we edit the crontab using <code>crontab -e</code> and change our entry to:</p>
+<p>Every day at 20:00 the export_dump.sh script is executed. It typically finishes in under a minute, but as long as it completes in two minutes, we're OK.</p>
+<p>So we name our new inbound timer <strong>db/export</strong>, set the schedule to <strong>every 1 day</strong> and the precision to <strong>2 minutes</strong>. The URL for this new timer will look something like <strong>k.wdt.io/123abc/db/export</strong>. With that, we edit the crontab using <code>crontab -e</code> and change our entry to:</p>
 <pre><code class="language-bash">0 20 * * * /home/oracle/scripts/export_dump.sh &amp;&amp; curl -s -m 30 http://k.wdt.io/123abc/db/export
 </code></pre>
 <p>Now we'll be notified when the job fails and can fix whatever caused the problem (maybe we ran out of diskspace).</p>
