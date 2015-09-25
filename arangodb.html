@@ -116,6 +116,13 @@
 foxx-manager install foxx-heartbeat /heartbeat url='http://&lt;timer URL&gt;' interval=60
 </code></pre>
 <p>Now ArangoDB will send a kick (heartbeat) to WDT.io about every 60 seconds. This regular kick prevents WDT.io from sending an alert to you. If, for whatever reason the heartbeat stops, WDT.io won't get the kick and will send an alert.</p>
+<h3>Example</h3>
+<p>We have an arrangodb server that we'd like to receive a ping from every minute.</p>
+<p>We create a new inbound timer, <strong>arangodb/ping</strong>, set the schedule to <strong>every 1 minute</strong> and the precision to <strong>1 minutes</strong>.  The URL for this new timer will look something like <strong>k.wdt.io/123abc/arangodb/ping</strong>.  With this URL, we deploy the foxx application, foxx heartbeat.</p>
+<pre><code class="language-bash">foxx-manager update
+foxx-manager install https://github.com/pekeler/foxx-heartbeat/archive/master.zip /heartbeat url='http://k.wdt.io/123abc/arangodb/ping' interval=60
+</code></pre>
+<p>Now we'll be notified when arangodb fails to send a heartbeat.</p>
 <h3>More info</h3>
 <ul>
 <li><a href="https://www.arangodb.com">ArangoDB</a></li>
