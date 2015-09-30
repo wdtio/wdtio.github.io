@@ -100,15 +100,7 @@
           <p>ArangoDB is a multi-model NoSQL database. We can use WDT.io to be notified when it stops.</p>
 <ol>
 <li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already.</li>
-<li>Create a new inbound timer.
-<ol>
-<li>Provide a name for the timer. Forward slashes can be used to provide grouping, for example <em>production/arangodb</em></li>
-<li>Provide a description. The description will be included in alert emails.</li>
-<li>Select a schedule, every <em>1</em> minute for example.</li>
-<li>Select a tolerance of <em>1</em> minute.</li>
-<li>Provide an alert email, this is where alerts will be sent.</li>
-<li>Save the new timer.</li>
-</ol></li>
+<li><a href="inbound_timer.html">Create</a> a new inbound timer.</li>
 <li>Copy the URL of this new timer.</li>
 <li>Add the foxx-heartbeat app to ArangoDB and configure it with the timer URL.</li>
 </ol>

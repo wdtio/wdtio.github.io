@@ -100,15 +100,7 @@
           <p>Logrotate is a tool that manages activities like automatic rotation, removal and compression of log files in Unix-like systems. We can use WDT to be notified when logrotate failed.</p>
 <ol>
 <li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already.</li>
-<li>Create a new inbound timer.
-<ol>
-<li>Provide a name for the timer maybe something that reminds us of the log file we want to monitor.  Forward slashes can be used to provide grouping, for example <em>production/cron/backup</em></li>
-<li>Provide a description.  The description will be included in alert emails.</li>
-<li>Select a schedule (<em>every</em>) that mirrors your anticipated log rotation schedule.</li>
-<li>Select a precision (<em>tolerance</em>) to account for variations in the time it can take to execute the job.</li>
-<li>Provide an alert email, this is where job notifications will be sent.</li>
-<li>Save the new timer.</li>
-</ol></li>
+<li><a href="inbound_timer.html">Create</a> a new inbound timer.</li>
 <li>Copy the URL of this new timer.</li>
 <li>Edit the config file for your logfile under `/etc/logrotate.d/'.
 <ol>
