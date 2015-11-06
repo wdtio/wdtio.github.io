@@ -97,13 +97,28 @@
       <main class="cookbook">
         <section class="recipe">
           <h2>How to monitor Heroku Scheduler jobs</h2>
-          <p>Scheduler is an add-on from Heroku for running jobs on your app at scheduled time intervals, much like cron in a traditional server environment. We can use WDT.io to be notified when a job failed.</p>
-<p>...</p>
+          <p>Heroku is a PaaS supporting several stacks. Heroku Scheduler is an add-on for running jobs on Heroku at scheduled time intervals, similar to cron. We can use WDT.io to be notified when a Heroku Scheduler job failed.</p>
+<ol>
+<li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already.</li>
+<li><a href="inbound_timer.html">Create</a> a new inbound timer.</li>
+<li>Copy the URL of this new timer.</li>
+<li>Extend the job to send a kick to the URL copied from step 3.</li>
+</ol>
+<p>Now every time Heroku Scheduler runs your job, it'll also send a kick to WDT.io. This regular kick prevents WDT.io from sending an alert to you. If, for whatever reason the job fails, WDT.io won't get the kick and will send an alert.</p>
 <h3>Example</h3>
-<p>...</p>
+<p>Assuming we're using the node.js stack, we have the following Heroku Scheduler job on one of our Heroku apps:</p>
+<pre><code class="language-bash">node cleanup.js
+</code></pre>
+<p>The frequency is &quot;Every 10 minutes&quot; which means that Heroku Scheduler runs the cleanup script every 10 minutes. Our script typically finishes in under a minute, but as long as it completes in two minutes, we're OK.</p>
+<p>So we name our new inbound timer <strong>heroku/cleanup</strong>, set the schedule to <strong>every 10 minutes</strong> and the precision to <strong>2 minutes</strong>. The URL for this new timer will look something like <strong>k.wdt.io/123abc/heroku/cleanup</strong>. With that, we edit the job on the <a href="https://scheduler.heroku.com/dashboard">Heroku Scheduler dashboard</a> click on Edit and change our job to:</p>
+<pre><code class="language-bash">node cleanup.js &amp;&amp; curl -s -m 30 http://k.wdt.io/123abc/heroku/cleanup
+</code></pre>
+<p>Now we'll be notified when the job fails and can fix whatever caused the problem (maybe we have a syntax error in cleanup.js).</p>
 <h3>More info</h3>
 <ul>
-<li><a href="https://devcenter.heroku.com/articles/scheduler">dev center article</a></li>
+<li><a href="https://heroku.com">Heroku</a></li>
+<li><a href="https://elements.heroku.com/addons/scheduler">Heroku Scheduler</a></li>
+<li><a href="https://devcenter.heroku.com/articles/scheduler">Heroku Scheduler docs</a></li>
 </ul>
 
         </section>
