@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
   <link href='https://wdt.io/index.css' rel='stylesheet' type='text/css'>
-  <title>How to send programmatic kicks - WDT.io Cookbook</title>
+  <title>How to send kicks to WDT.io programmatically - WDT.io Cookbook</title>
   <link rel="apple-touch-icon" sizes="57x57" href="https://wdt.io/apple-touch-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="https://wdt.io/apple-touch-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="//wdt.io/apple-touch-icon-72x72.png">
@@ -96,47 +96,53 @@
       </header>
       <main class="cookbook">
         <section class="recipe">
-          <h2>How to send programmatic kicks</h2>
-          <p>Or how to make HTTP HEAD requests in various programming languages.</p>
-<p>You have a program that is supposed to do something on a regular schedule, and you want to monitor that with WDT.io.</p>
+          <h2>How to send kicks to WDT.io programmatically</h2>
+          <p>Or <em>how to make HTTP HEAD requests in various programming languages</em>.</p>
+<p>You have a program that is supposed to do something on a regular schedule, and you want to monitor that scheduled execution with WDT.io.</p>
 <ol>
 <li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already.</li>
 <li><a href="inbound_timer.html">Create</a> a new inbound timer.</li>
 <li>Copy the URL of this new timer.</li>
 <li>In the part of your program that is supposed to run regularly, send a kick to the URL copied from step 3.</li>
 </ol>
-<p>Now every time that part of your program runs, it'll send a kick to WDT.io. This regular kick prevents WDT.io from sending an alert to you. If, for whatever reason the part fails or doesn't get invoked, WDT.io won't get the kick and will send an alert.</p>
+<p>Now every time that part of your program runs, it'll send a kick to WDT.io. This regular kick prevents WDT.io from sending an alert to you. If, for whatever reason the part fails or doesn't get invoked, WDT.io won't get the kick and will send you an alert.</p>
 <h3>Go</h3>
 <p>using the <a href="https://golang.org/pkg/net/http/#Client.Head">http package</a></p>
 <pre><code>import &quot;net/http&quot;
 
-http.Head(&quot;http://&lt;the URL from step 3&gt;&quot;)
+client := http.Client{Timeout: time.Duration(30 * time.Second)}    
+client.Head(&quot;http://&lt;the URL from step 3&gt;&quot;)
 </code></pre>
 <h3>Java</h3>
 <p>using <a href="https://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html">HttpURLConnection</a></p>
 <pre><code>import java.net.URL;
 import java.net.HttpURLConnection;
+import java.io.IOException;
 
 HttpURLConnection connection = (HttpURLConnection) new URL(&quot;http://&lt;the URL from step 3&gt;&quot;).openConnection();
 connection.setRequestMethod(&quot;HEAD&quot;);
-connection.getResponseCode();
+connection.setConnectTimeout(30000);
+try {
+  connection.getResponseCode();
+} catch (IOException e) {}
 </code></pre>
 <h3>Node.js</h3>
 <p>using <a href="https://github.com/request/request">Request</a></p>
 <pre><code>var request = require('request');
 
-request.head('http://&lt;the URL from step 3&gt;');
+request.head('http://&lt;the URL from step 3&gt;', {timeout: 30000});
 </code></pre>
 <p>or using <a href="https://github.com/danwrong/restler">Restler</a></p>
 <pre><code>var rest = require('restler');
 
-rest.head('http://&lt;the URL from step 3&gt;');
+rest.head('http://&lt;the URL from step 3&gt;', {timeout: 30000});
 </code></pre>
 <h3>PHP</h3>
 <p>using <a href="http://php.net/manual/en/ref.curl.php">cURL</a></p>
 <pre><code>$ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, 'http://&lt;the URL from step 3&gt;');
 curl_setopt($ch, CURLOPT_NOBODY, true);
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 curl_exec($ch);
 curl_close($ch);
 </code></pre>
@@ -144,13 +150,16 @@ curl_close($ch);
 <p>using <a href="http://docs.python-requests.org/en/latest/user/quickstart/#make-a-request">requests</a></p>
 <pre><code>import requests
 
-requests.head(&quot;http://&lt;the URL from step 3&gt;&quot;)
+try:
+  requests.head(&quot;http://&lt;the URL from step 3&gt;&quot;, timeout=30)
+except:
+  pass
 </code></pre>
 <h3>Ruby</h3>
 <p>using <a href="http://ruby-doc.org/stdlib/libdoc/net/http/rdoc/Net/HTTP.html">net/http</a></p>
 <pre><code>require 'net/http'
 
-Net::HTTP.start('k.wdt.io') {|http| http.head('&lt;the path of the URL from step 3&gt;')}
+Net::HTTP.start('k.wdt.io', :open_timeout =&gt; 30) {|http| http.head('&lt;the path of the URL from step 3&gt;')} rescue nil
 </code></pre>
 <p>or using <a href="http://www.ruby-doc.org/core/Kernel.html#method-i-60">curl</a></p>
 <pre><code>`curl -Ism 30 http://&lt;the URL from step 3&gt;`
