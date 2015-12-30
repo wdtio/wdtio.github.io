@@ -137,6 +137,24 @@ request.head('http://&lt;the URL from step 3&gt;', {timeout: 30000});
 
 rest.head('http://&lt;the URL from step 3&gt;', {timeout: 30000});
 </code></pre>
+<h3>Perl</h3>
+<p>using <a href="http://search.cpan.org/~ether/HTTP-Message-6.11/lib/HTTP/Request/Common.pm">HTTP::Request</a></p>
+<pre><code>use HTTP::Request::Common;
+use LWP::UserAgent;
+
+my $ua = LWP::UserAgent-&gt;new;
+$ua-&gt;timeout(30);
+$ua-&gt;request(HEAD 'http://&lt;the URL from step 3&gt;');
+</code></pre>
+<p>or using <a href="http://search.cpan.org/~crisb/WWW-Curl-3.02/Easy.pm.in">WWW::Curl::Easy</a></p>
+<pre><code>use WWW::Curl::Easy;
+
+my $curl = WWW::Curl::Easy-&gt;new;
+$curl-&gt;setopt(CURLOPT_URL, 'http://&lt;the URL from step 3&gt;');
+$curl-&gt;setopt(CURLOPT_NOBODY, 1);
+$curl-&gt;setopt(CURLOPT_TIMEOUT, 30);
+$curl-&gt;perform;
+</code></pre>
 <h3>PHP</h3>
 <p>using <a href="http://php.net/manual/en/ref.curl.php">cURL</a></p>
 <pre><code>$ch = curl_init();
