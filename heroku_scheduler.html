@@ -111,7 +111,7 @@
 </code></pre>
 <p>The frequency is &quot;Every 10 minutes&quot; which means that Heroku Scheduler runs the cleanup script every 10 minutes. Our script typically finishes in under a minute, but as long as it completes in two minutes, we're OK.</p>
 <p>So we name our new inbound timer <strong>heroku/cleanup</strong>, set the schedule to <strong>every 10 minutes</strong> and the precision to <strong>2 minutes</strong>. The URL for this new timer will look something like <strong>k.wdt.io/123abc/heroku/cleanup</strong>. With that, we edit the job on the <a href="https://scheduler.heroku.com/dashboard">Heroku Scheduler dashboard</a> click on Edit and change our job to:</p>
-<pre><code class="language-bash">node cleanup.js &amp;&amp; curl -s -m 30 http://k.wdt.io/123abc/heroku/cleanup
+<pre><code class="language-bash">node cleanup.js &amp;&amp; curl -sm 30 k.wdt.io/123abc/heroku/cleanup
 </code></pre>
 <p>Now we'll be notified when the job fails and can fix whatever caused the problem (maybe we have a syntax error in cleanup.js).</p>
 <h3>More info</h3>

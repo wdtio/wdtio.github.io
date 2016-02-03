@@ -109,7 +109,7 @@
 <p>We have a scheduled task to copy backups from our SQL server to our NAS, it is launched via a batch script.
 Every day at 20:00 the copy-backup.bat script is executed. It typically finishes in under a minute, but as long as it completes in two minutes, we're OK.</p>
 <p>So we name our new inbound timer <strong>db/copy-backup</strong>, set the schedule to <strong>every 1 day</strong> and the precision to <strong>2 minutes</strong>. The URL for this new timer will look something like <strong>k.wdt.io/123abc/db/copy-backup</strong>. With that, we can edit our batch script, for example:</p>
-<pre><code class="language-batch">COPY /Y &quot;C:\DB\bk\*.BAK&quot; \\NAS\backups\DB &amp;&amp; C:\curl.exe k.wdt.io/123abc/db/copy-backup
+<pre><code class="language-batch">COPY /Y &quot;C:\DB\bk\*.BAK&quot; \\NAS\backups\DB &amp;&amp; C:\curl.exe -sm 30 k.wdt.io/123abc/db/copy-backup
 </code></pre>
 <p>Now we'll be notified when the job fails and can fix whatever caused the problem (maybe we ran out of diskspace).</p>
 <h3>More info</h3>

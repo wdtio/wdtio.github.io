@@ -136,7 +136,7 @@
         create 640 nginx adm
         sharedscripts
         postrotate
-                [ -f /var/run/nginx.pid ] &amp;&amp; kill -USR1 `cat /var/run/nginx.pid` &amp;&amp; curl -s -m 30 http://k.wdt.io/123abc/www/logrotate/nginx
+                [ -f /var/run/nginx.pid ] &amp;&amp; kill -USR1 `cat /var/run/nginx.pid` &amp;&amp; curl -sm 30 k.wdt.io/123abc/www/logrotate/nginx
         endscript
 </code></pre>
 <p>Now we'll be notified when the rotation fails and can fix whatever caused the problem.</p>

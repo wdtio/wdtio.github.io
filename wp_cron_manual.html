@@ -118,7 +118,7 @@ define('DISABLE_WP_CRON', true);
 </code></pre>
 <p>Once a day, after the site is visited and wp_cron.php is invoked, the backup will happen.  Unfortunately this is a very low traffic site and might not see any visits for several days.</p>
 <p>So we create a new inbound timer <strong>wp/wp_cron_kicker</strong>, set the schedule to <strong>every 5 minutes</strong> and the precision to <strong>2 minutes</strong>.  The URL for this new timer will look something like <strong>k.wdt.io/123abc/wp/wp_cron_kicker</strong>.  With that, we edit the crontab using <code>crontab -e</code> and change our entry to:</p>
-<pre><code class="language-bash">*/5 * * * *    wget -O- -q -t 1 http://www.server.com/wp-cron.php?doing_wp_cron=1 &gt; /dev/null 2&gt;&amp;1 &amp;&amp; curl -s -m 30 http://k.wdt.io/123abc/
+<pre><code class="language-bash">*/5 * * * *    wget -O- -q -t 1 http://www.server.com/wp-cron.php?doing_wp_cron=1 &gt; /dev/null 2&gt;&amp;1 &amp;&amp; curl -sm 30 k.wdt.io/123abc/
 </code></pre>
 <p>Now we'll be notified when the wp_cron does not completely sucessfully and in a timely manner.</p>
 <h3>More info</h3>

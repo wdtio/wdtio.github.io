@@ -120,7 +120,6 @@ import java.net.HttpURLConnection;
 import java.io.IOException;
 
 HttpURLConnection connection = (HttpURLConnection) new URL(&quot;http://&lt;the URL from step 3&gt;&quot;).openConnection();
-connection.setRequestMethod(&quot;HEAD&quot;);
 connection.setConnectTimeout(30000);
 try {
   connection.getResponseCode();
@@ -151,7 +150,6 @@ $ua-&gt;request(HEAD 'http://&lt;the URL from step 3&gt;');
 
 my $curl = WWW::Curl::Easy-&gt;new;
 $curl-&gt;setopt(CURLOPT_URL, 'http://&lt;the URL from step 3&gt;');
-$curl-&gt;setopt(CURLOPT_NOBODY, 1);
 $curl-&gt;setopt(CURLOPT_TIMEOUT, 30);
 $curl-&gt;perform;
 </code></pre>
@@ -159,7 +157,6 @@ $curl-&gt;perform;
 <p>using <a href="http://php.net/manual/en/ref.curl.php">cURL</a></p>
 <pre><code>$ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, 'http://&lt;the URL from step 3&gt;');
-curl_setopt($ch, CURLOPT_NOBODY, true);
 curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 curl_exec($ch);
 curl_close($ch);
@@ -180,7 +177,7 @@ except:
 Net::HTTP.start('k.wdt.io', :open_timeout =&gt; 30) {|http| http.head('&lt;the path of the URL from step 3&gt;')} rescue nil
 </code></pre>
 <p>or using <a href="http://www.ruby-doc.org/core/Kernel.html#method-i-60">curl</a></p>
-<pre><code>`curl -Ism 30 http://&lt;the URL from step 3&gt;`
+<pre><code>`curl -sm 30 &lt;the URL from step 3&gt;`
 </code></pre>
 
         </section>
