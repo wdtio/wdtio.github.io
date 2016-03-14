@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
   <link href='https://wdt.io/index.css' rel='stylesheet' type='text/css'>
-  <title>How to monitor ArangoDB - WDT.io Cookbook</title>
+  <title>Monitoring anacron - WDT.io Cookbook</title>
   <link rel="apple-touch-icon" sizes="57x57" href="https://wdt.io/apple-touch-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="https://wdt.io/apple-touch-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="//wdt.io/apple-touch-icon-72x72.png">
@@ -96,29 +96,41 @@
       </header>
       <main class="cookbook">
         <section class="recipe">
-          <h2>How to monitor ArangoDB</h2>
-          <p>ArangoDB is a multi-model NoSQL database. We can use WDT.io to be notified when it stops.</p>
+          <h2>How to monitor scheduled anacron jobs</h2>
+          <p>Anacron is very similar to cron, wherein it is used to perform tasks on a scheduled basis on a unix-like system.  Anacron will also ensure that tasks are eventually run even when the host is turned off part of the time.  This is ideal for laptops and other machines that can be in various power states when a scheduled task is meant to run.
+We can use WDT.io to be notified when a scheduled anacron job fails to run.</p>
 <ol>
 <li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already.</li>
 <li><a href="inbound_timer.html">Create</a> a new inbound timer.</li>
 <li>Copy the URL of this new timer.</li>
-<li>Add the foxx-heartbeat app to ArangoDB and configure it with the timer URL.</li>
+<li>Extend the job to send a kick to the URL copied from step 3.</li>
 </ol>
-<pre><code class="language-bash">foxx-manager update
-foxx-manager install foxx-heartbeat /heartbeat url='http://&lt;timer URL&gt;' interval=&lt;interval in seconds&gt;
-</code></pre>
-<p>Now ArangoDB will send a kick (heartbeat) to WDT.io about every 60 seconds. This regular kick prevents WDT.io from sending an alert to you. If, for whatever reason the heartbeat stops, WDT.io won't get the kick and will send an alert.</p>
+<p>Now every time anacron runs your job, it'll also send a kick to WDT.io. This regular kick prevents WDT.io from sending an alert to you. If, for whatever reason the job fails or does not run (perhaps the server has been off for longer than expected), WDT.io won't get the kick and will send an alert.</p>
 <h3>Example</h3>
-<p>We have an ArrangoDB server that we'd like to receive a ping from every minute.</p>
-<p>We create a new inbound timer, <strong>arangodb/ping</strong>, set the schedule to <strong>every 1 minute</strong> and the precision to <strong>1 minutes</strong>.  The URL for this new timer will look something like <strong>k.wdt.io/123abc/arangodb/ping</strong>. With this URL, we deploy the foxx application, foxx-heartbeat.</p>
-<pre><code class="language-bash">foxx-manager update
-foxx-manager install foxx-heartbeat /heartbeat url='http://k.wdt.io/123abc/arangodb/ping' interval=60
+<p>We have the following /etc/anacrontab on our development laptop that backs up local assets on the laptop:</p>
+<pre><code class="language-bash">SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+RANDOM_DELAY=10
+START_HOURS_RANGE=12-13
+
+7       10      backup             /home/lester/backup.sh
 </code></pre>
-<p>Now we'll be notified when ArangoDB fails to send a heartbeat.</p>
+<p>Every 7 days, starting 10 minutes past the START_HOUR_RANGE with a RANDOM_DELAY of up to 10 minutes, the job will launch.  It takes roughly 10 minutes to run.</p>
+<p>So we name our new inbound timer <strong>backupdb</strong>, set the schedule to <strong>every 7 day</strong> and the precision to <strong>30 minutes</strong>, which is RANDOM_DELAY + DELAY + time to run. The URL for this new timer will look something like <strong>k.wdt.io/123abc/backupdb</strong>. With that, we edit /etc/anacrontab and change it to:</p>
+<pre><code class="language-bash">SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+RANDOM_DELAY=45
+START_HOURS_RANGE=3-22
+
+7       25      backup             /home/lester/backup.sh &amp;&amp; curl -sm 30 k.wdt.io/123abc/backupdb
+</code></pre>
+<p>Now we'll be notified when the job fails or fails to run and can fix whatever caused the problem (maybe our laptop has been turned off for a long period of time or is not connected to the network).</p>
 <h3>More info</h3>
 <ul>
-<li><a href="https://www.arangodb.com">ArangoDB</a></li>
-<li><a href="https://github.com/pekeler/foxx-heartbeat">foxx-heartbeat</a></li>
+<li><a href="http://linux.die.net/man/5/anacrontab">man page for anacrontab</a></li>
+<li><a href="http://linux.die.net/man/8/anacron">man page for anacron</a></li>
 </ul>
 
         </section>
@@ -131,5 +143,18 @@ foxx-manager install foxx-heartbeat /heartbeat url='http://k.wdt.io/123abc/arang
       </footer>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', window.main);
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    window.addEventListener('load', function() {
+      var u="//wdtstats.wdt.io/piwik/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', 3]);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    });
+  </script>
 </body>
 </html>
