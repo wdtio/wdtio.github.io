@@ -100,13 +100,13 @@
           <p>Iron.io offers a commercial workload management solution comprised of a message queue service (IronMQ), a job processing manager (IronWorker), and a cache (IronCache). We can use WDT.io to monitor all three.</p>
 <h3>IronMQ</h3>
 <ol>
-<li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already.</li>
-<li>Create a new outbound timer.</li>
-<li>Name the timer after the project and queue.</li>
-<li>Use the REST endpoint for getting info about your queue as the URL of the new timer.</li>
-<li>Select GET.</li>
-<li>Select every 1 minute as the schedule.</li>
-<li>Save the new timer.</li>
+<li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already</li>
+<li>Create a new outbound timer</li>
+<li>Name the timer after the project and queue</li>
+<li>Use the REST endpoint for getting info about your queue as the URL of the new timer</li>
+<li>Select GET</li>
+<li>Select every 1 minute as the schedule</li>
+<li>Save the new timer</li>
 </ol>
 <p>A quick way to figure out the REST endpoint URL is to copy and change the webhook URL from the iron.io UI. For example, if the project name on iron.io is &quot;homework&quot; and the name of the queue is &quot;task-queue&quot;, the webhook URL will look something like https://mq-aws-eu-west-1-1.iron.io/3/projects/123/queues/task-queue/webhook?oauth=4a5b6c. So we can name the outbound watchdog timer <strong>homework/task-queue</strong> and use <strong>https://mq-aws-eu-west-1-1.iron.io/3/projects/123/queues/task-queue?oauth=4a5b6c</strong> as URI.</p>
 <p>Now when the queue becomes unavailable, WDT.io will send an alert.</p>
@@ -114,13 +114,13 @@
 <p>Workers are simply programs, so we extend our worker program to kick an inbound watchdog timer so that an alert gets sent when the worker fails to run or breaks. Please see <a href="programmatic_kicks.html">How to send kicks to WDT.io programmatically</a> for details on how to do this. The only thing specific to IronWorker is that the inbound timer should be named after the project and task. So if the project's name is &quot;homework&quot; and the worker's name &quot;math-worker&quot;, we'd name the timer <strong>homework/math-worker</strong>. And we set the schedule of the timer to match the one of the worker.</p>
 <h3>IronCache</h3>
 <ol>
-<li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already.</li>
-<li>Create a new outbound timer.</li>
-<li>Name the timer after the project and cache.</li>
-<li>Use the REST endpoint for getting info about your cache as the URL of the new timer.</li>
-<li>Select GET.</li>
-<li>Select every 1 minute as the schedule.</li>
-<li>Save the new timer.</li>
+<li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already</li>
+<li>Create a new outbound timer</li>
+<li>Name the timer after the project and cache</li>
+<li>Use the REST endpoint for getting info about your cache as the URL of the new timer</li>
+<li>Select GET</li>
+<li>Select every 1 minute as the schedule</li>
+<li>Save the new timer</li>
 </ol>
 <p>For example, if the project name on iron.io is &quot;homework&quot; and the name of the cache is &quot;submitted_cache&quot;, the endpoint URL will look something like <strong>https://cache-aws-us-east-1.iron.io/1/projects/123/caches/submitted_cache?oauth=4a5b6c</strong>. So we can name the outbound watchdog timer <strong>homework/submitted_cache</strong>.</p>
 <p>Now when the cache becomes unavailable, WDT.io will send an alert.</p>

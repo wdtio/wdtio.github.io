@@ -108,9 +108,9 @@
 </code></pre>
 <p>Let's decide that we want to monitor every 5 minutes and that the maximum used disk space we allow is 90%.</p>
 <ol>
-<li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already.</li>
-<li><a href="inbound_timer.html">Create</a> a new inbound timer &quot;diskspace&quot; with a schedule of every 5 minutes +1 minute tolerance.</li>
-<li>Copy the URL of this new timer.</li>
+<li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already</li>
+<li><a href="inbound_timer.html">Create</a> a new inbound timer &quot;diskspace&quot; with a schedule of every 5 minutes +1 minute tolerance</li>
+<li>Copy the URL of this new timer</li>
 <li>Edit the crontab and add this line:</li>
 </ol>
 <pre><code class="language-bash">*/5 * * * * ((`df -l --total | tail -1 | awk '{ print int($5) }'` &lt; 90)) &amp;&amp; curl -sm 30 &lt;the URL from step 3&gt;
