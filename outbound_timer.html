@@ -26,8 +26,13 @@
   <meta name="msapplication-TileColor" content="#d9d4d2">
   <meta name="msapplication-TileImage" content="https://wdt.io/mstile-144x144.png">
   <meta name="theme-color" content="#d9d4d2">
+  <style type="text/css">
+  .index .bottom-link {
+    display: none;
+  }
+  </style>
 </head>
-<body>
+<body class="">
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: none;">
     <defs>
       <g id="logo-basics">
@@ -91,7 +96,7 @@
         <div class="clock">
         </div>
         <div class="menu">
-          <h1><a href="/">Cookbook</a></h1>
+          <h1><a href="/">Cookbook<span class="header-wide"> Index</span></a></h1>
         </div>
       </header>
       <main class="cookbook">
@@ -113,9 +118,9 @@
 </ul>
 
         </section>
+        <span class="links bottom-link"><a href='/'>More Recipes</a></span>
 
       </main>
-
       <footer class="links">
         <span>©&nbsp;2016&nbsp;WDT.io&nbsp;Inc.</span>
         <span><a href='mailto:info@wdt.io'>info@wdt.io</a></span>
