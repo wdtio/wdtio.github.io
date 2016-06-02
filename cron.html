@@ -111,13 +111,14 @@
 </ol>
 <p>Now every time cron runs your job, it'll also send a kick to WDT.io. This regular kick prevents WDT.io from sending an alert to you. If, for whatever reason the job fails, WDT.io won't get the kick and will send an alert.</p>
 <h3>Example</h3>
-<p>We have the following cron tab on our database server:</p>
-<pre><code class="language-bash">0 20 * * * /home/oracle/scripts/export_dump.sh
+<p>We have the following cron tab on our server:</p>
+<pre><code class="language-bash">*/5 * * * * /root/backup.sh
 </code></pre>
-<p>Every day at 20:00 the export_dump.sh script is executed. It typically finishes in under a minute, but as long as it completes in two minutes, we're OK.</p>
-<p>So we name our new inbound timer <strong>db/export</strong>, set the schedule to <strong>every 1 day</strong> and the precision to <strong>2 minutes</strong>. The URL for this new timer will look something like <strong>k.wdt.io/123abc/db/export</strong>. With that, we edit the crontab using <code>crontab -e</code> and change our entry to:</p>
-<pre><code class="language-bash">0 20 * * * /home/oracle/scripts/export_dump.sh &amp;&amp; curl -sm 30 k.wdt.io/123abc/db/export
+<p>Every 5 minutes the backup.sh script is executed. It typically finishes in 10 seconds, but as long as it completes in half a minute, we're OK.</p>
+<p>So we name our new inbound timer <strong>backup</strong>, set the schedule unit to <strong>cron</strong>, the cron schedule to <strong>*/5 * * * *</strong> and the precision to <strong>.5 minute</strong>. The URL for this new timer will look something like <strong>k.wdt.io/123abc/backup</strong>. With that, we edit the crontab using <code>crontab -e</code> and change our entry to:</p>
+<pre><code class="language-bash">*/5 * * * * /root/backup.sh &amp;&amp; curl -sm 30 k.wdt.io/123abc/backup
 </code></pre>
+<video width="420" src="https://s3-us-west-2.amazonaws.com/docs.wdt.io/cron-monitor.mp4" controls muted></video>
 <p>Now we'll be notified when the job fails and can fix whatever caused the problem (maybe we ran out of diskspace).</p>
 <h3>More info</h3>
 <ul>
