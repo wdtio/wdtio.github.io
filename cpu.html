@@ -109,7 +109,7 @@
 <pre><code class="language-bash">%Cpu(s):  3.8 us,  0.6 sy,  0.0 ni, 94.2 id,  0.2 wa,  0.0 hi,  0.2 si,  1.0 st
 </code></pre>
 <p>The values we're most interested in are <strong>us</strong> (CPU time spent in user space), <strong>sy</strong> (CPU time spent in kernel space), and <strong>ni</strong> (CPU time spent on low priority processes). We can add them up and floor the result into a comparable integer with <code>awk '{print int($2+$4+$6)}'</code>. All together we have</p>
-<pre><code class="language-bash">top -bn 2 -d 0.01 | grep '^%Cpu' | tail -n 1 | awk '{print int($2+$4+$6)}'
+<pre><code class="language-bash">top -bn 2 -d 1 | grep '^%Cpu' | tail -n 1 | awk '{print int($2+$4+$6)}'
 </code></pre>
 <p>Let's decide that we want to monitor every 2 minutes and that the maximum CPU usage is 80%.</p>
 <ol>
