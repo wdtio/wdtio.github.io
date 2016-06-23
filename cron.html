@@ -118,7 +118,7 @@
 <p>So we name our new inbound timer <strong>backup</strong>, set the schedule unit to <strong>cron</strong>, the cron schedule to <strong>*/5 * * * *</strong> and the precision to <strong>.5 minute</strong>. The URL for this new timer will look something like <strong>k.wdt.io/123abc/backup</strong>. With that, we edit the crontab using <code>crontab -e</code> and change our entry to:</p>
 <pre><code class="language-bash">*/5 * * * * /root/backup.sh &amp;&amp; curl -sm 30 k.wdt.io/123abc/backup
 </code></pre>
-<video width="420" src="https://s3-us-west-2.amazonaws.com/docs.wdt.io/cron-monitor.mp4" controls muted></video>
+<p><video width="420" src="https://s3-us-west-2.amazonaws.com/docs.wdt.io/cron-monitor.mp4" controls muted></video></p>
 <p>Now we'll be notified when the job fails and can fix whatever caused the problem (maybe we ran out of diskspace).</p>
 <h3>More info</h3>
 <ul>

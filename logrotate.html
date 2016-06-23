@@ -110,7 +110,8 @@
 <li>Edit the config file for your logfile under `/etc/logrotate.d/'
 <ol>
 <li>Add or extend the postrotate section to send a kick to the URL copied from step 3</li>
-</ol></li>
+</ol>
+</li>
 </ol>
 <p>Now every time logrotate runs, it'll also send a kick to WDT.io. This regular kick prevents WDT.io from sending an alert to you. If, for whatever reason logrotate fails, WDT.io won't get the kick and will send an alert.</p>
 <h3>Example</h3>
