@@ -103,7 +103,7 @@
         <section class="recipe">
           <h2>How to detect noisy neighbors</h2>
           <p>In shared virtual environments like a cloud, noisy neighbors can negatively impact the performance of your applications. A neighbor is a virtual machine sharing the same resources as you, owned by someone else (another tenant). &quot;Noise&quot; can be in the form of stolen cpu cycles and saturated disk I/O.</p>
-<p>Disk I/O can be saturated by an individual tenant forcing other tenants to wait for their turn and stealing of cpu cycles. If your application depends on reading or writing to disk, this I/O wait can essentially stall it.</p>
+<p>Disk I/O can become saturated or cpu cycles stolen by an individual tenant forcing other tenants to wait for their turn in the processing queue. If your application depends on reading or writing to disk, this I/O wait can essentially stall it.</p>
 <p>One possible reason for cpu being stolen is if the IaaS provider oversold the physical server and the VMs on that server are competing for the cpu. If your application needs to be fast and is cpu bound, stolen cpu cycles will impact your performance.</p>
 <p>If our processes would have to wait to access the disk, it shows up as cpu <strong>wa</strong> time when using the <code>top</code> or <code>vmstat</code> command. Steal time shows up as <strong>st</strong>. We can easily monitor these values with a recurring cron job to alert us of neighbors being noisy. The general idea is to have the cron job compare the average cpu <strong>wa</strong> and <strong>st</strong> usage over some time to maximum values. The cron job then kicks a watchdog timer if the usage is below the maximums. Now if the usage is above those maximums, WDT.io won't get kicked and sends out an alert.</p>
 <p>For this recipe we use <strong>vmstat</strong>. Used with <code>vmstat 1 2</code> it runs twice, and with a delay of one second. The output will be something like the following:</p>
@@ -115,14 +115,14 @@
 <p>The second to last line is the average since boot, and the last line is the average during the one second we're letting <code>vmstat</code> run. We can use <code>tail -1</code> to capture that last line, and <code>awk</code> with <code>$(NF-1)</code> and <code>$(NF)</code> to get the second to last field (wa) and the last field (st). Furthermore, we can compare the values of these fields to their maximums and have <code>awk</code> return a successful exit status (0) if both values are below their maximums. All together we have:</p>
 <pre><code class="language-bash">vmstat 1 2 | tail -1 | awk '{exit ($(NF-1) &lt;= WA_MAX &amp;&amp; $(NF) &lt;= ST_MAX) ? 0 : 1}'
 </code></pre>
-<p>Let's decide that we want to monitor every 2 minutes, that the maximum I/O wait is 50%, and the maximum cpu steal is 20%.</p>
+<p>Let's decide that we want to monitor every 2 minutes, that the maximum I/O wait is 60%, and the maximum cpu steal is 20%.</p>
 <ol>
 <li><a href="https://wdt.io/signup">Sign up</a> on WDT.io if you haven't already</li>
 <li><a href="inbound_timer.html">Create</a> a new inbound timer &quot;noisy-neighbor&quot; with a schedule of every 2 minutes +30 seconds tolerance</li>
 <li>Copy the URL of this new timer</li>
 <li>Edit the crontab and add this line:</li>
 </ol>
-<pre><code class="language-bash">*/2 * * * * vmstat 1 2 | tail -1 | awk '{exit ($(NF-1) &lt;= 50 &amp;&amp; $(NF) &lt;= 20) ? 0 : 1}' &amp;&amp; curl -sm 30 &lt;the URL from step 3&gt;
+<pre><code class="language-bash">*/2 * * * * vmstat 1 2 | tail -1 | awk '{exit ($(NF-1) &lt;= 60 &amp;&amp; $(NF) &lt;= 20) ? 0 : 1}' &amp;&amp; curl -sm 30 &lt;the URL from step 3&gt;
 </code></pre>
 <p>Now we'll be notified when the neighbors are too noisy (or the cronjob fails) and can contact support or move our application to another VM. If the noise is so bad that our cron job fails to start on time, we'll get alerted as well which shows the advantage of passive inbound monitoring over active monitoring.</p>
 <h3>More info</h3>
