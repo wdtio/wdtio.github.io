@@ -102,7 +102,7 @@
       <main class="cookbook">
         <section class="recipe">
           <h2>How to monitor unexpected DNS changes</h2>
-          <p>DNS is a necessary pillar for functional domain name resolution from IP address to domain names.
+          <p>DNS is a necessary pillar for functional domain name resolution from IP addresses to domain names.
 Unexpected changes to your domain name records can lead to surprising and often negative results.
 Periodically verifying these records manually can be a long and tedious task.</p>
 <p>So let's automate this verification by setting up a cron job which periodically invokes the <code>host</code> command to fetch DNS records and compare them to an expected result. Then we set up an inbound watchdog timer to monitor this cron job and alert us if the records do not match the expected response.</p>
